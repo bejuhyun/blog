@@ -12,20 +12,20 @@ import javax.validation.executable.ExecutableValidator;
 import javax.validation.metadata.BeanDescriptor;
 import java.util.Set;
 
-@Component
-public class BoardValidator implements Validator {
-
-    @Override
-    public boolean supports(Class<?> clazz) {
-        return board.class.equals(clazz);
-    }
-
-    @Override
-    public void validate(Object obj, Errors errors) {
-        board b = (board) obj;
-        if(StringUtils.isEmpty(b.getContent())){
-            errors.rejectValue("content", "key", "내용을 입력하세요");
-        }
-
-    }
-}
+//@Component
+//public class BoardValidator implements Validator {
+//
+//    @Override
+//    public boolean supports(Class<?> clazz) {
+//        return board.class.equals(clazz);
+//    }
+//
+//    @Override
+//    public void validate(Object obj, Errors errors) {
+//        board b = (board) obj;
+//        if(StringUtils.isEmpty(b.getContent())){
+//            errors.rejectValue("content", "key", "내용을 입력하세요");
+//        }
+//
+//    }
+//}

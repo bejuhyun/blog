@@ -22,6 +22,7 @@ import javax.validation.constraints.Size;
 public class board {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @javax.validation.constraints.NotNull
     private Long id;
     @NotNull
     @Size(min=2, max=30, message = "제목은 2자 이상 30자 이하")
