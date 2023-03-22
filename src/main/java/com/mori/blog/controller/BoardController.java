@@ -3,11 +3,14 @@ package com.mori.blog.controller;
 import com.mori.blog.model.board;
 import com.mori.blog.repository.BoardRepository;
 //import com.mori.blog.validator.BoardValidator;
+
+import com.mori.blog.validator.BoardValidator;
 import net.bytebuddy.implementation.bind.MethodDelegationBinder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -20,6 +23,9 @@ public class BoardController {
 
     @Autowired
     private BoardRepository boardRepository;
+
+    @Autowired
+    private BoardValidator boardValidator;
 
 
 
@@ -42,21 +48,25 @@ public class BoardController {
         return "board/form";
     }
 
+
 //    @PostMapping("/form")
-//    public String form(@Valid board board, BindingResult bindingResult)
+//    public String form(@ModelAttribute board board, Model model)
 //    {
-////        boardValidator.validate(board, bindingResult);
-//        if (bindingResult.hasErrors()) {
-//            return "board/form";
-//        }
 //        boardRepository.save(board);
+//        model.addAttribute(board);
 //        return "redirect:/board/list";
 //    }
+
     @PostMapping("/form")
-    public String form(@ModelAttribute board board, Model model)
+    public String form(@Valid board board, BindingResult bindingResult)
     {
+        boardValidator.validate(board, bindingResult);
+
+        if(bindingResult.hasErrors()){
+            return "/board/form";
+        }
+
         boardRepository.save(board);
-        model.addAttribute(board);
         return "redirect:/board/list";
     }
 }
