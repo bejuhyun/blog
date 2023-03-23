@@ -7,6 +7,10 @@ import com.mori.blog.repository.BoardRepository;
 import com.mori.blog.validator.BoardValidator;
 import net.bytebuddy.implementation.bind.MethodDelegationBinder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,11 +31,14 @@ public class BoardController {
     @Autowired
     private BoardValidator boardValidator;
 
-
-
     @GetMapping("/list")
-    public String list(Model model){
-        List<board> boards = boardRepository.findAll();
+    public String list(Model model, @PageableDefault(size = 2) Pageable pageable){
+
+        Page<board> boards = boardRepository.findAll(pageable);
+        int startpage = Math.max(1, boards.getPageable().getPageNumber() - 4);
+        int endpage = Math.min(boards.getTotalPages(), boards.getPageable().getPageNumber() + 4);
+        model.addAttribute("startpage", startpage);
+        model.addAttribute("endpage", endpage);
         model.addAttribute("boards", boards);
         return "board/list";
     }
